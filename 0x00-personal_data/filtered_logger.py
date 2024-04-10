@@ -17,7 +17,7 @@ def filter_datum(
         fields: List[str],
         redaction: str,
         message: str,
-        seperator: str,
+        separator: str,
         ) -> str:
     """
     Filters a log line
