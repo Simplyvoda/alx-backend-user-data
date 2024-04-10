@@ -11,6 +11,7 @@ patterns = {
         'extract': lambda x, y: r'(?P<field>{})=[^{}]*'.format('|'.join(x), y),
         'replace': lambda x: r'\g<field>={}'.format(x),
         }
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def filter_datum(
@@ -24,6 +25,18 @@ def filter_datum(
     """
     extract, replace = (patterns["extract"], patterns["replace"])
     return re.sub(extract(fields, separator), replace(redaction), message)
+
+
+def get_logger() -> logging.Logger:
+    """creates log for user data
+    """
+    logger = logging.getLogger("user_data")
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(RedactingFormatter(PII_FIELDS))
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+    logger.addHandler(stream_handler)
+    return logger
 
 
 class RedactingFormatter(logging.Formatter):
@@ -42,6 +55,6 @@ class RedactingFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         """method that formats class"""
         message = super(RedactingFormatter, self).format(record)
-        txt = filter_datum(self.fields,
+        txt = filter_datum(self.fields,\
                 self.REDACTION, message, self.SEPARATOR)
         return txt
