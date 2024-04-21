@@ -4,6 +4,8 @@
 import re
 from flask import request
 from typing import List, TypeVar
+import os
+
 
 class Auth():
     """
@@ -47,6 +49,7 @@ class Auth():
             return request.headers.get('Authorization', None)
         return None
     
+
     def current_user(self, request=None) -> TypeVar('User'):
         """
         Returns the current authenticated user
@@ -54,3 +57,21 @@ class Auth():
         :return: current authenticated user
         """
         return None
+    
+
+    def session_cookie(self, request=None) -> str:
+        """
+        Return the value of the session cookie from a request.
+
+        Arguments:
+            request: request object
+        
+        Returns:
+            The value of the session cookie named SESSION_NAME from the request.
+            If request is None or if the session cookie is not found, returns None.
+        """
+        if request is None:
+            return None
+        
+        session_name = os.getenv("SESSION_NAME", "_my_session_id")
+        return request.cookies.get(session_name)
