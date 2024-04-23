@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, tuple_
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -63,3 +63,21 @@ class DB:
         if res is None:
             raise NoResultFound()
         return result
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """
+        Finds a user in the db and updates the user according
+        """
+        user = self.find_user_by(id=user_id)
+        if user is not None:
+            new_value = {}
+            for k, v in kwargs.items():
+                if hasattr(User, key):
+                    new_value[getattr(User, key)] = value
+                else:
+                    raise ValueError()
+            self._session.query(User).filter(User.id == user_id).update(
+                new_value,
+                synchronize_session=False,
+            )
+            self._session.commit()
