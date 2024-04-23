@@ -3,6 +3,7 @@
 Module for Authentication methods
 """
 import bcrypt
+from db import DB
 
 
 def _hash_password(password: str) -> bytes:
@@ -11,3 +12,10 @@ def _hash_password(password: str) -> bytes:
     """
     hashed_pwd = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     return hashed_pwd
+
+class Auth:
+    """Auth class to interact with the authentication database.
+    """
+
+    def __init__(self):
+        self._db = DB()
