@@ -8,6 +8,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from user import User
 
+
 def _hash_password(password: str) -> bytes:
     """
     Returns salted hash of input password
