@@ -4,7 +4,9 @@ Module for Authentication methods
 """
 import bcrypt
 from db import DB
+from sqlalchemy.orm.exc import NoResultFound
 
+from user import User
 
 def _hash_password(password: str) -> bytes:
     """
@@ -33,8 +35,3 @@ class Auth:
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
         raise ValueError("User {} already exists".format(email))
-
-            return user
-        except Exception as e:
-            # Handle any unexpected exceptions
-            raise RuntimeError(f"Failed to register user: {e}")
