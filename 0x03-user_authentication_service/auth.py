@@ -29,7 +29,19 @@ class Auth:
         if not already registered
         """
         try:
-            self._db.find_user_by(email=email)
-        except NoResultFound:
-            return self._db.add_user(email, _hash_password(password))
-        raise ValueError("User {} already exists".format(email))
+            # Check if user with email already exists
+            user = self._db.find_user_by(email=email)
+            if user:
+                raise ValueError(f"User {email} already exists")
+
+            # Hash the password
+            hashed_password = self._hash_password(password)
+
+            # Save the user to the database
+            user = User(email=email, hashed_password=hashed_password)
+            self._db.add_user(user)
+
+            return user
+        except Exception as e:
+            # Handle any unexpected exceptions
+            raise RuntimeError(f"Failed to register user: {e}")
