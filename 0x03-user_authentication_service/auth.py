@@ -41,8 +41,10 @@ class Auth:
         """
         Validates a users credential returns true if password is true
         """
-        user = self._db.find_user_by(email=email)
-        if user:
-            if bcrypt.checkpw(password.encode(), user.hashed_password):
-                return True
+        try:
+            user = self._db.find_user_by(email=email)
+            if user:
+                return bcrypt.checkpw(password.encode(), user.hashed_password)
+        except NoResultFound:
+            return False
         return False
