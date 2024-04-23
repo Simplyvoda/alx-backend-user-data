@@ -52,9 +52,9 @@ class DB:
         """
         fields, values = [], []
         for k, v in kwargs.items():
-            if hasatrr(User, k):
+            if hasattr(User, k):
                 fields.append(getattr(User, k))
-                values.append.(v)
+                values.append(v)
             else:
                 raise InvalidRequestError()
         res = self._session.query(User).filter(
@@ -62,7 +62,7 @@ class DB:
         ).first()
         if res is None:
             raise NoResultFound()
-        return result
+        return res
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """
@@ -72,8 +72,8 @@ class DB:
         if user is not None:
             new_value = {}
             for k, v in kwargs.items():
-                if hasattr(User, key):
-                    new_value[getattr(User, key)] = value
+                if hasattr(User, k):
+                    new_value[getattr(User, k)] = v
                 else:
                     raise ValueError()
             self._session.query(User).filter(User.id == user_id).update(
