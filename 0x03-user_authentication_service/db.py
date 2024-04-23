@@ -58,8 +58,8 @@ class DB:
             else:
                 raise InvalidRequestError()
         res = self._session.query(User).filter(
-                tuple_(*fields).in_([tuple(values)]
-                    ).first()
+            tuple_(*fields).in_([tuple(values)])
+        ).first()
         if res is None:
             raise NoResultFound()
         return result
