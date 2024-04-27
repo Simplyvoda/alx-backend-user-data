@@ -18,7 +18,7 @@ def index() -> str:
     return jsonify({"message": "Bienvenue"})
 
 
-@app.route('/users', methods=['POST'], strict_slashes=False)
+@app.route("/users", methods=['POST'], strict_slashes=False)
 def users() -> str:
     """POST route
     registers users
@@ -60,7 +60,7 @@ def logout() -> str:
     if user is None:
         abort(403)
     AUTH.destroy_session(user.id)
-    return redirect("/", code=302)
+    return redirect("/")
 
 
 @app.route("/profile", methods=["GET"], strict_slashes=False)
